@@ -388,6 +388,51 @@ module.exports  = {
 			} ); */
 						
 		}
+		
 		allCards.forEach(element => dumpCards(element) );
+	},
+	
+	getDecks : function () {
+		var wdecks = [];
+		allCards[0].deckInfo.forEach(function(value, key) {
+			wdecks.push(key);			
+		});
+		var bdecks = [];
+		allCards[1].deckInfo.forEach(function(value, key) {
+			bdecks.push(key);			
+		});
+		return [wdecks,bdecks];
+	},
+	
+	getCards : function(decks) {
+		function getDecksCards(deck, deckName) {
+			var retval = [];
+			deck.deckInfo.forEach(function(value, key) {
+				console.log('***', key, '***');
+				console.log(value, '@@@@@@@@@@@@@@@@@@@@@@@@@');
+				console.log(util.inspect(value), deck.deck.length);
+				
+				if (deckName === key) {	
+					for (var i = value.startIndex; i <= value.endIndex; i++) {
+						retval.push(deck.deck[i]);
+					}
+				}
+			} )
+			return retval;
+		}
+		
+		var allb = [];
+		var allw = [];
+		for (var i = 0; i < decks.length; i++) {
+			var thisDeck = decks[i];
+			var bcard = getDecksCards(allCards[BLACK], thisDeck);
+			bcard.forEach(b => allb.push(b));
+			
+			var wcard = getDecksCards(allCards[WHITE], thisDeck);
+			wcard.forEach(e => alle.push(e));			
+		}
+		
+		return [allw, allb];
 	}
+	
 };
