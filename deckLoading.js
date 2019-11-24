@@ -1,6 +1,7 @@
 var hashmap = require('./hashmap-2.0.4/hashmap');
 var fs = require('fs');
 var path = require('path');
+var util = require('util');
 
 
 var allCards = [ {deck: [], deckInfo: new hashmap.HashMap(/*deckTitle, deckInfo*/)},
@@ -285,21 +286,33 @@ module.exports  = {
 		//loadDeckSimple(getIndexVar, './cards/CaHMainWhite.txt', 'white', 'Main Deck', addCard, hasDeckInfo, setDeckInfo);
 		//loadDeckSimple(getIndexVar,'./cards/CaHUkMainBlack.txt', 'black', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
 		//loadDeckSimple(getIndexVar,'./cards/CaHUkMainWhite.txt', 'white', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
-		//loadDeckSimple(getIndexVar,'./cards/CaHExpansionsBlack.txt', 'black', 'Expansions', addCard, hasDeckInfo, setDeckInfo);
-		//loadDeckSimple(getIndexVar,'./cards/CaHExpansionsWhite.txt', 'white', 'Expansions', addCard, hasDeckInfo, setDeckInfo);
-		//loadDeckSimple(getIndexVar,'./cards/CaHCrabsAdjustHumidityBlack.txt', 'black', 'Crabs Adjust Humidity', addCard, hasDeckInfo, setDeckInfo);
-		//loadDeckSimple(getIndexVar,'./cards/CaHCrabsAdjustHumidityWhite.txt', 'white','Crabs Adjust Humidity', addCard, hasDeckInfo, setDeckInfo);
-		//loadDeckSimple(getIndexVar,'./cards/CaHHolidaySpecialsMixed.txt', 'mixed', 'Holiday Special', addCard, hasDeckInfo, setDeckInfo);
+
+
+
+
+		loadDeckSimple(getIndexVar,'./cards/CaHExpansionsBlack.txt', 'black', 'Expansions', addCard, hasDeckInfo, setDeckInfo);
+		loadDeckSimple(getIndexVar,'./cards/CaHExpansionsWhite.txt', 'white', 'Expansions', addCard, hasDeckInfo, setDeckInfo);
+
+		loadDeckSimple(getIndexVar,'./cards/CaHCrabsAdjustHumidityBlack.txt', 'black', 'Crabs Adjust Humidity', addCard, hasDeckInfo, setDeckInfo);
+		loadDeckSimple(getIndexVar,'./cards/CaHCrabsAdjustHumidityWhite.txt', 'white','Crabs Adjust Humidity', addCard, hasDeckInfo, setDeckInfo);
+
+	/*	
+		loadDeckSimple(getIndexVar,'./cards/CaHHolidaySpecialsMixed.txt', 'mixed', 'Holiday Special', addCard, hasDeckInfo, setDeckInfo);
 		
+*/		
+
 		loadDeckSimple(getIndexVar,'./cards/CaHUkMainBlack.txt', 'black', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
 		loadDeckSimple(getIndexVar,'./cards/CaHUkMainWhite.txt', 'white', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
-		
+
+
 		loadDeckSimple(getIndexVar,'./cards/CaHExpansion90sBlack.txt', 'black', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
 		loadDeckSimple(getIndexVar,'./cards/CaHExpansion90sWhite.txt', 'white', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
-		
-		//loadDeckSimple(getIndexVar,'./cards/CaHDevOpsAgainstHumanityBlack.txt', 'black', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
-		//loadDeckSimple(getIndexVar,'./cards/CaHDevOpsAgainstHumanityWhite.txt', 'white', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
-			
+
+		loadDeckSimple(getIndexVar,'./cards/CaHDevOpsAgainstHumanityBlack.txt', 'black', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
+		loadDeckSimple(getIndexVar,'./cards/CaHDevOpsAgainstHumanityWhite.txt', 'white', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);			
+
+
+
 		// loadDeckSimple(getIndexVar,'./cards/', 'black', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
 		// loadDeckSimple(getIndexVar,'./cards/', 'white', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
 		
@@ -317,9 +330,64 @@ module.exports  = {
 		
 		// loadDeckSimple(getIndexVar,'./cards/', 'black', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
 		// loadDeckSimple(getIndexVar,'./cards/', 'white', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);	
+		
+		
+		// fix deckinfo
+		var prev_start = allCards[WHITE].length - 1;
+		for (var i = allCards[WHITE].deckInfo.length; --i >= 0; ) {
+			allCards[WHITE].deckInfo[i].endIndex = prev_start;
+			prev_start = allCards[WHITE].deckInfo[i].startIndex - 1;
+		}
+		
+		prev_start = allCards[BLACK].length - 1;
+		for (var i = allCards[BLACK].deckInfo.length; --i >= 0; ) {
+			allCards[BLACK].deckInfo[i].endIndex = prev_start;
+			prev_start = allCards[BLACK].deckInfo[i].startIndex - 1;
+		}
 	},	
 
 	dumpAllCards: function() {			
-		allCards.forEach(element => console.log(element) );
+		function mydump(arr,level) { //https://stackoverflow.com/questions/749266/object-dump-javascript
+			var dumped_text = "";
+			if(!level) level = 0;
+
+			var level_padding = "";
+			var uselvl = level+1 % 8;
+			for(var j=0;j<uselvl;j++) level_padding += " ";
+
+			if(typeof(arr) == 'object') {  
+				for(var item in arr) {
+					var value = arr[item];
+
+					if(typeof(value) == 'object') { 
+						dumped_text += level_padding + "'" + item + "' ...\n";
+						dumped_text += mydump(value,level+1);
+					} else {
+						dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
+					}
+				}
+			} else { 
+				dumped_text = "===>"+arr+"<===("+typeof(arr)+")";
+			}
+			return dumped_text;
+		}		
+		
+		
+		function dumpCards(deck) {
+			console.log(deck);
+						
+			
+			/* deck.deckInfo.forEach(function(value, key) {
+				console.log('***', key, '***');
+				console.log(value, '@@@@@@@@@@@@@@@@@@@@@@@@@');
+				console.log(util.inspect(value), deck.deck.length);
+					
+				for (var i = value.startIndex; i <= value.endIndex; i++) {
+					console.log(i, deck.deck[i]);
+				}
+			} ); */
+						
+		}
+		allCards.forEach(element => dumpCards(element) );
 	}
 };
