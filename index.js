@@ -40,5 +40,6 @@ console.log(decks[0], decks[1]);
 
 console.log(fs.readFileSync('./leader.txt', 'ascii'));
 
-console.log('Server ready! Go fuck yourself!')
+console.log('Server ready... ');
+console.log('\n\n\n\t\tGo fuck yourself!')
 var server=app.listen(3000,function() {});
