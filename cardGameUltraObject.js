@@ -31,20 +31,5 @@ module.exports = {
             players: [ ], 
             createPlayer : privateCreatePlayer
         };
-    },
-    
-    
-    /*
-
-    run : function () { 
-        console.log("I am running!"); 
-    },
-    
-    performAction : function(action) {
-        switch(action){
-             // cases...
-        }
     }
-
-    */
 }

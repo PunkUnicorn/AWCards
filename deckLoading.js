@@ -1,8 +1,6 @@
 var hashmap = require('./hashmap-2.0.4/hashmap');
 var fs = require('fs');
 var path = require('path');
-//var url = require('url');
-//var util = require('util');
 
 
 var allCards = [ {deck: [], deckInfo: new hashmap.HashMap(/*deckTitle, deckInfo*/)},
@@ -22,7 +20,7 @@ function makeUnderscoresTheSame (question) {
 	// WIP
 
 
-	 // accomodate the regular expression a little
+	// accomodate the regular expression a little
 	//question = question;
 	if (question.substr(question.length-1, 1) == '_')
 		question += ' ';
