@@ -1,4 +1,14 @@
+var hashmap = require('./hashmap-2.0.4/hashmap');
+var fs = require('fs');
+var path = require('path');
+//var url = require('url');
+//var util = require('util');
 
+
+var allCards = [ {deck: [], deckInfo: new hashmap.HashMap(/*deckTitle, deckInfo*/)},
+                 {deck: [], deckInfo: new hashmap.HashMap(/*deckTitle, deckInfo*/)} ];
+const WHITE = 0;
+const BLACK = 1;
 
 function makeUnderscoresTheSame (question) {
 	
@@ -66,6 +76,111 @@ function makeUnderscoresTheSame (question) {
 	return question.trim();
 };
 
+function loadDeckSimple (getIndexVar, file, colour /*'black' 'white' or 'mixed' for unknown*/, startDeckTitle, doAcceptCard, doHasDeckInfo, doSetDeckInfo) {
+	var doUnderscoreTest = false;
+
+	var buffer = fs.readFileSync(file, 'utf8');
+
+	const startTrigger = 'Cards Against Humanity:';
+	console.log('bytes read:', buffer.length);
+	var bigString = buffer.toString();
+	arrayOfLines = bigString.match(/[^\r\n]+/g); //http://stackoverflow.com/questions/5034781/js-regex-to-split-by-line
+
+	var makeDeckInfo = function() {
+		return { startIndex:0, endIndex:0 };
+	};
+
+	var makeDeckTitle = function (deckTitle, colour) {
+		var key = deckTitle.trim() + ' (' + colour + ')';
+		var count = 0;
+		while (doHasDeckInfo(colour, key)) {
+			key += ' and another';
+			count++;
+		}
+		return key;
+	};
+
+	var deckTitle = makeDeckTitle(startDeckTitle, colour);
+	var deckInfo = makeDeckInfo();
+	//var cardNo = startCardNo;
+	var setStartIndex = true;
+	var setEndIndex = false;
+	var lastDecentLineNo = 0;
+	var isBlackCard = false;
+	for (var lineIndex in arrayOfLines) {
+		var line = arrayOfLines[lineIndex].trim();
+		if (line.length == 0) continue;
+
+		if (line.substr(0, startTrigger.length) === startTrigger) {
+			if (setEndIndex) {
+				deckInfo.endIndex = lastDecentLineNo;
+				console.log('Deck: ' + deckTitle);
+
+				doSetDeckInfo(colour, deckTitle, deckInfo);
+				deckInfo = makeDeckInfo();
+			}
+
+			var possibleDeckTitle = line
+				.substr(startTrigger.length)
+				.trim();
+
+			if (possibleDeckTitle.length > 0) {
+				deckTitle = makeDeckTitle(possibleDeckTitle, colour);
+			} else {
+				//continue;
+				deckTitle = startDeckTitle;
+			}
+
+			setStartIndex = true;
+			setEndIndex = true;
+		}
+		else {
+			// underscores test
+			isBlackCard = (colour == 'black') || (colour == 'mixed' &&  (line.indexOf('_') > -1 || line.indexOf('?') == line.length-1));
+			if (isBlackCard) {
+				var testLine = makeUnderscoresTheSame(line);
+				//If any underscores after this we failed at making them standard
+				var failed = testLine
+						.replace(/______/g, 'XXXXXX')
+						.indexOf('_') > -1 ? true : false;
+
+				if (failed) {
+					console.log('ERROR ERIC:'+testLine);
+				}
+
+				line = testLine;
+			}
+
+			if (doAcceptCard(isBlackCard, line)) {
+				if (setStartIndex) {
+					deckInfo.startIndex = getIndexVar(isBlackCard, false);
+					setStartIndex = false;
+					setEndIndex = true;
+				}
+
+			//cards.deck.push(line);
+
+				lastDecentLineNo = getIndexVar(isBlackCard, false);
+				getIndexVar(isBlackCard, true);
+			}
+		}
+	}
+
+	if (setEndIndex) {
+		deckInfo.endIndex = lastDecentLineNo;
+		setEndIndex = false;
+		doSetDeckInfo(colour, deckTitle, JSON.parse(JSON.stringify(deckInfo)));
+	}
+
+	//deckInfo.startIndex = cardNo;
+	//allCards.deckInfo.set(possibleDeckTitle, deckInfo);
+
+	bigString = '';
+	arrayOfLines = 0;
+
+	//return cardNo;
+};
+
 // deckLoading.js
 module.exports  = {
 	
@@ -105,119 +220,12 @@ module.exports  = {
 		if (!tryIt(test2b, expected2b)) console.log('second b failed xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 	},
 
-	// Hello
-
 	//    _                 _______          _
 	//   | |               | |  _  \        | |
 	//   | | ___   __ _  __| | | | |___  ___| | __
 	//   | |/ _ \ / _` |/ _` | | | / _ \/ __| |/ /
 	//   | | (_) | (_| | (_| | |/ /  __/ (__|   <
 	//   |_|\___/ \__,_|\__,_|___/ \___|\___|_|\_\
-
-	loadDeckSimple : function (getIndexVar, file, colour /*'black' 'white' or 'mixed' for unknown*/, startDeckTitle, doAcceptCard, doHasDeckInfo, doSetDeckInfo) {
-		var doUnderscoreTest = false;
-
-		var buffer = fs.readFileSync(file, 'utf8');
-
-		const startTrigger = 'Cards Against Humanity:';
-		console.log('bytes read:', buffer.length);
-		var bigString = buffer.toString();
-		arrayOfLines = bigString.match(/[^\r\n]+/g); //http://stackoverflow.com/questions/5034781/js-regex-to-split-by-line
-
-		var makeDeckInfo = function() {
-			return { startIndex:0, endIndex:0 };
-		};
-
-		var makeDeckTitle = function (deckTitle, colour) {
-			var key = deckTitle.trim() + ' (' + colour + ')';
-			var count = 0;
-			while (doHasDeckInfo(colour, key)) {
-				key += ' and another';
-				count++;
-			}
-			return key;
-		};
-
-		var deckTitle = makeDeckTitle(startDeckTitle, colour);
-		var deckInfo = makeDeckInfo();
-		//var cardNo = startCardNo;
-		var setStartIndex = true;
-		var setEndIndex = false;
-		var lastDecentLineNo = 0;
-		var isBlackCard = false;
-		for (var lineIndex in arrayOfLines) {
-			var line = arrayOfLines[lineIndex].trim();
-			if (line.length == 0) continue;
-
-			if (line.substr(0, startTrigger.length) === startTrigger) {
-				if (setEndIndex) {
-					deckInfo.endIndex = lastDecentLineNo;
-					console.log('Deck: ' + deckTitle);
-
-					doSetDeckInfo(colour, deckTitle, deckInfo);
-					deckInfo = makeDeckInfo();
-				}
-
-				var possibleDeckTitle = line
-					.substr(startTrigger.length)
-					.trim();
-
-				if (possibleDeckTitle.length > 0) {
-					deckTitle = makeDeckTitle(possibleDeckTitle, colour);
-				} else {
-					//continue;
-					deckTitle = startDeckTitle;
-				}
-
-				setStartIndex = true;
-				setEndIndex = true;
-			}
-			else {
-				// underscores test
-				isBlackCard = (colour == 'black') || (colour == 'mixed' &&  (line.indexOf('_') > -1 || line.indexOf('?') == line.length-1));
-				if (isBlackCard) {
-					var testLine = makeUnderscoresTheSame(line);
-					//If any underscores after this we failed at making them standard
-					var failed = testLine
-							.replace(/______/g, 'XXXXXX')
-							.indexOf('_') > -1 ? true : false;
-
-					if (failed) {
-						console.log('ERROR ERIC:'+testLine);
-					}
-
-					line = testLine;
-				}
-
-				if (doAcceptCard(isBlackCard, line)) {
-					if (setStartIndex) {
-						deckInfo.startIndex = getIndexVar(isBlackCard, false);
-						setStartIndex = false;
-						setEndIndex = true;
-					}
-
-				//cards.deck.push(line);
-
-					lastDecentLineNo = getIndexVar(isBlackCard, false);
-					getIndexVar(isBlackCard, true);
-				}
-			}
-		}
-
-		if (setEndIndex) {
-			deckInfo.endIndex = lastDecentLineNo;
-			setEndIndex = false;
-			doSetDeckInfo(colour, deckTitle, JSON.parse(JSON.stringify(deckInfo)));
-		}
-
-		//deckInfo.startIndex = cardNo;
-		//allCards.deckInfo.set(possibleDeckTitle, deckInfo);
-
-		bigString = '';
-		arrayOfLines = 0;
-
-		//return cardNo;
-	},
 
 	loadAllDecks: function() {
 		var addCard = function(isBlackCard, card) {
@@ -311,5 +319,9 @@ module.exports  = {
 		
 		// loadDeckSimple(getIndexVar,'./cards/', 'black', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);
 		// loadDeckSimple(getIndexVar,'./cards/', 'white', 'UK/AU Main Deck', addCard, hasDeckInfo, setDeckInfo);	
-	}	
+	},	
+
+	dumpAllCards: function() {			
+		allCards.forEach(element => console.log(element) );
+	}
 };

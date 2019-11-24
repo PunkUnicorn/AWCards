@@ -1,9 +1,9 @@
-var hashmap = require('./hashmap-2.0.4/hashmap');
+//var hashmap = require('./hashmap-2.0.4/hashmap');
 
 var fs = require('fs');
 var path = require('path');
-var url = require('url');
-var util = require('util');
+//var url = require('url');
+//var util = require('util');
 
 var cardGameUltraObject = require("./cardGameUltraObject.js");
 var deckLoading = require("./deckLoading.js");
@@ -30,11 +30,17 @@ app.get('/', function(req, res) {
 });
 
 
-fs.readFile('./leader.txt', 'ascii', function (err, data){
-	console.log(data);
-	if (err != null) console.log(err);
-});
-
+console.log('Testing underscore swap...')
 deckLoading.TEST();
 
+console.log('Loading all decks...')
+deckLoading.loadAllDecks();
+deckLoading.dumpAllCards();
+
+console.log(fs.readFileSync('./leader.txt', 'ascii'));//, function (err, data){
+	//console.log(data);
+	//if (err != null) console.log(err);
+//});
+
+console.log('Server ready! Go fuck yourself!')
 var server=app.listen(3000,function() {});
