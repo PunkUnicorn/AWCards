@@ -17,6 +17,8 @@ app.get('/', function(req, res) {
 });
 
 
+console.log(fs.readFileSync('./leader.txt', 'ascii'));
+
 console.log('Testing underscore swap...')
 deckLoading.TEST();
 
@@ -28,11 +30,11 @@ console.log('Listing decks...')
 var decks = deckLoading.getDecks();
 console.log(decks[0], decks[1]);
 
-//////var cards = deckLoading.getCards(decks[0][0], decks[1][0], decks[0][1], decks[1][1]);
-//////console.log(cards);
+var cards = deckLoading.getCards(decks[0].concat(decks[1]));
+console.log('Listing cards...')
+console.log(cards);
 
-console.log(fs.readFileSync('./leader.txt', 'ascii'));
+console.log(fs.readFileSync('./gfy.txt', 'ascii'));
+console.log('Server ready!');
 
-console.log('Server ready... ');
-console.log('\n\n\n\t\tGo fuck yourself!')
 var server=app.listen(3000,function() {});

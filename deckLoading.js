@@ -392,6 +392,8 @@ module.exports  = {
 		allCards.forEach(element => dumpCards(element) );
 	},
 	
+	/* give it an array of decks gotten from getDecks() above */
+	/* returns an array of two elements, [white decks, black decks ] */
 	getDecks : function () {
 		var wdecks = [];
 		allCards[0].deckInfo.forEach(function(value, key) {
@@ -404,14 +406,12 @@ module.exports  = {
 		return [wdecks,bdecks];
 	},
 	
+	/* give it an array of decks gotten from getDecks() above */
+	/* returns an array of two elements, [white cards, black cards ] */
 	getCards : function(decks) {
 		function getDecksCards(deck, deckName) {
 			var retval = [];
-			deck.deckInfo.forEach(function(value, key) {
-				console.log('***', key, '***');
-				console.log(value, '@@@@@@@@@@@@@@@@@@@@@@@@@');
-				console.log(util.inspect(value), deck.deck.length);
-				
+			deck.deckInfo.forEach(function(value, key) {				
 				if (deckName === key) {	
 					for (var i = value.startIndex; i <= value.endIndex; i++) {
 						retval.push(deck.deck[i]);
@@ -429,9 +429,9 @@ module.exports  = {
 			bcard.forEach(b => allb.push(b));
 			
 			var wcard = getDecksCards(allCards[WHITE], thisDeck);
-			wcard.forEach(e => alle.push(e));			
+			wcard.forEach(e => allw.push(e));			
 		}
-		
+				
 		return [allw, allb];
 	}
 	
