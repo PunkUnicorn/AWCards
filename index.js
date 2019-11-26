@@ -7,13 +7,6 @@ var express=require('express');
 
 var app = express();
 
-function sendHtmlFile(filename, res) {
-	
-	res.set('Content-Type', 'text/html');
-
-	return res;
-}
-
 app.get('/', function(req, res) {
 	
 	res.sendfile('./index.html')
