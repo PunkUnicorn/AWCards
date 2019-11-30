@@ -40,3 +40,4 @@ console.log(fs.readFileSync('./gfy.txt', 'ascii'));
 
 var server=app.listen(3000,function() {});
 console.log('listening on port 3000........ Server ready!');
+console.log('\n\n\thttp://localhost:3000/');
