@@ -7,13 +7,15 @@ var express=require('express');
 
 var app = express();
 
+app.use(express.static('public'));
+
 app.get('/', function(req, res) {
 	
-	res.sendfile('./index.html')
+	//res.sendfile('./public/index.html')
 		
 	var wut = cardGameUltraObject.createGame('bobs game');
 	var player = wut.createPlayer('bob');
-	
+	console.log(' \ ', req);
 });
 
 
@@ -35,6 +37,6 @@ console.log('Listing cards...')
 console.log(cards);
 
 console.log(fs.readFileSync('./gfy.txt', 'ascii'));
-console.log('Server ready!');
 
 var server=app.listen(3000,function() {});
+console.log('listening on port 3000........ Server ready!');
