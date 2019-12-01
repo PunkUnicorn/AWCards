@@ -152,7 +152,7 @@
 	http.setRequestHeader("Connection", "close");
 
 	http.onreadystatechange = function() {//Call a function when the state changes.
-		if(http.readyState == 4)// && (http.status => 200 || http.status =< 205)) {
+		if(http.readyState == 4) {// && (http.status => 200 || http.status =< 205)) {
 			document.getElementById('buildtimestamp').innerHTML = http.responseText;
 		}
 	}
