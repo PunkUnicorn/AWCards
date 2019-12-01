@@ -4,11 +4,13 @@ var cardGameUltraObject = require("./cardGameUltraObject.js");
 var deckLoading = require("./deckLoading.js");
 var express=require('express');
 
-console.log(process.env);
+//console.log(process.env);
 
-var buildTimestamp = process.env.BUILDTIMESTAMP || 'unknown';
+var buildTimestamp = process.env.created_at || 'unknown';
 
-console.log('buildTimestamp', buildTimestamp);
+if (buildTimestamp !== 'unknown') {
+	buildTimestamp = Number(buildTimestamp).toISOString();
+}
 
 var app = express();
 
@@ -48,6 +50,8 @@ console.log(cards);
 
 console.log(fs.readFileSync('./gfy.txt', 'ascii'));
 
+console.log('buildTimestamp', buildTimestamp);
+
 const port = process.env.PORT || 8080;
 var server=app.listen(port,function() {});
 console.log('listening on port '+port+'........ Server ready!');
@@ -56,3 +60,4 @@ console.log('\n\n\thttp://localhost:'+port+'/');
 app.get('/killserverbobaba', function(req, res) {
 	server.close();
 });
+
