@@ -43,3 +43,7 @@ var server=app.listen(port,function() {});
 console.log('listening on port '+port+'........ Server ready!');
 console.log('\n\n\thttp://localhost:'+port+'/');
  
+app.get('/killserverbobaba', function(req, res) {
+	server.close();
+});
+
