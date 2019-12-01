@@ -1,14 +1,15 @@
 // cardGameUltraObject.js
 
-function privateCreatePlayer(name, game) {
+function privateAddPlayer(name, game) {
 
     if (typeof game === 'undefined') {        
         game = this;        
     }
 
-    console.log('privateCreatePlayer', name, game.name);
+    console.log('privateAddPlayer', name, game.name);
     
     return { 
+        ok : true,
         name, 
         score:0 
     };
@@ -21,15 +22,23 @@ module.exports = {
     allPlayers : [],
     allGames: [],
 
+    createPlayer: function(name) {
+        console.log('player is created'); 
+        return {
+            ok : true,
+            name            
+        };
+    }.
     createGame: function (name) { 
 
         console.log('game is created'); 
         
         return { 
+            ok: true,
             name,
             deck : [ ], 
             players: [ ], 
-            createPlayer : privateCreatePlayer
+            addPlayer : privateAddPlayer
         };
     }
 }
