@@ -28,7 +28,8 @@ module.exports = {
             ok : true,
             name            
         };
-    }.
+    },
+    
     createGame: function (name) { 
 
         console.log('game is created'); 
