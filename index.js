@@ -8,10 +8,6 @@ var express=require('express');
 
 var buildTimestamp = process.env.created_at || 'unknown';
 
-if (buildTimestamp !== 'unknown') {
-	buildTimestamp = Number(buildTimestamp).toISOString();
-}
-
 var app = express();
 
 app.use(express.static('public'));
