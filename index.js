@@ -38,7 +38,7 @@ console.log(cards);
 
 console.log(fs.readFileSync('./gfy.txt', 'ascii'));
 
-var port=8080;
+const port = process.env.PORT || 8080;
 var server=app.listen(port,function() {});
 console.log('listening on port '+port+'........ Server ready!');
 console.log('\n\n\thttp://localhost:'+port+'/');
