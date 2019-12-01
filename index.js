@@ -17,13 +17,31 @@ app.get('/buildtimestamp', function (req, res) {
 	res.end();
 });
 
-app.get('/', function(req, res) {
+app.post('/creategame', function(req, res) {
+	console.log(' \creategame', req);
+
+	var gameName = req.param('name');
 	
-	//res.sendfile('./public/index.html')
-		
-	var wut = cardGameUltraObject.createGame('bobs game');
-	var player = wut.createPlayer('bob');
-	console.log(' \ ', req);
+	var wut = cardGameUltraObject.createGame(gameName);
+	
+	//var player = wut.createPlayer('bob');	
+});
+
+app.post('/createplayer', function(req, res) {
+	console.log(' \createplayer', req);
+	
+	var playerName = req.param('name');
+	var createResult = cardGameUltraObject.createPlayer(name);
+	
+	if (createResult.ok) {
+		var autoAddGameName = req.param('game');
+		if (typeof autoAddGameName !== 'unknown') {
+			createResult = cardGameUltraObject.addPlayer(autoAddGameName, name);
+		}
+	}
+	
+	res.write(createResult);
+	res.end();
 });
 
 
