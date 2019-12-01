@@ -4,13 +4,20 @@ var cardGameUltraObject = require("./cardGameUltraObject.js");
 var deckLoading = require("./deckLoading.js");
 var express=require('express');
 
-//console.log(process.env);
 
-var buildTimestamp = process.env.created_at || 'unknown';
+// create a config store ("playershitandstuff.json") in the current working directory
+const store = require('data-store')({ path: process.cwd() + '/playershitandstuff.json' });
+
+
+/* see https://www.npmjs.com/package/data-store#usage-example */
+
+
 
 var app = express();
 
 app.use(express.static('public'));
+
+var buildTimestamp = process.env.created_at || 'unknown';
 
 app.get('/buildtimestamp', function (req, res) {
 	res.write(buildTimestamp);
@@ -20,27 +27,34 @@ app.get('/buildtimestamp', function (req, res) {
 app.post('/creategame', function(req, res) {
 	console.log(' \creategame', req);
 
-	var gameName = req.param('name');
+	var gamename = req.param('gamename');
 	
-	var wut = cardGameUltraObject.createGame(gameName);
-	
-	//var player = wut.createPlayer('bob');	
+	var wut = cardGameUltraObject.createGame(gamename);
+
+	res.write(wut);
+	res.end();
 });
 
 app.post('/createplayer', function(req, res) {
 	console.log(' \createplayer', req);
 	
-	var playerName = req.param('name');
-	var createResult = cardGameUltraObject.createPlayer(name);
-	
-	if (createResult.ok) {
-		var autoAddGameName = req.param('game');
+	var playerName = req.param('playername');
+	var createResultPlayer = cardGameUltraObject.createPlayer(name);
+	var createResultGame = { ok:true };	
+
+	if (createResultPlayer.ok) {
+		var autoAddGameName = req.param('gamename');
 		if (typeof autoAddGameName !== 'unknown') {
-			createResult = cardGameUltraObject.addPlayer(autoAddGameName, name);
+			createResultGame = cardGameUltraObject.addPlayer(autoAddGameName, name);
 		}
 	}
 	
-	res.write(createResult);
+	res.write( {
+		ok :createResultPlayer.ok && createResultGame.ok, 
+		player:createResultPlayer, 
+		game: createResultGame 
+	});
+
 	res.end();
 });
 
