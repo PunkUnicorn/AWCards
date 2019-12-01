@@ -1,7 +1,6 @@
 {
   "name": "awcards",
   "version": "0.0.1",
-  "private": "true",
   "dependencies": {
     "express": "^4.17.1",
     "nib": "^1.0.4",
@@ -9,9 +8,8 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Matthew Cocks",
   "license": "ISC",
   "description": ""
 }
