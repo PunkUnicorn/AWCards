@@ -63,9 +63,13 @@
       <h1 class="text-center display-3">A Warm Welcome!</h1>
       <div class='text-center'>
         <img class='img-fluid' src="GFY.png" width="50%"> </img>
+	<p class="lead">This is an independant implementation of the classic game: <span><a href="https://www.cardsagainsthumanityaichallenge.com"/>Cards Against Humanity</a></span> but with custom decks: <i>Social Justice Warrior</i>, <i>Alt-Right Crusader</i>, <i>Modern British Comedy</i> and <i>The Truth Is Out There</i> decks</p>
       </div>
-      <p class="lead">This is an independant implementation of the classic game: <span><a href="https://www.cardsagainsthumanityaichallenge.com"/>Cards Against Humanity</a></span> but with custom decks: <i>Social Justice Warrior</i>, <i>Alt-Right Crusader</i>, <i>Modern British Comedy</i> and <i>The Truth Is Out There</i> decks</p>
-      <a href="#" class="btn btn-primary btn-lg">Call to action!</a>
+      <form method='post' action='/createplayer'>
+	      <label for='playername'>Who the fuck are you? (hint don't use your real name)</label>
+	      <input id='playername' name='name'></input>	      
+        <a href="#" class="btn btn-primary btn-lg">Yes! I'm a sick bastard!</a>
+      </form>
     </header>
 
     <!-- Page Features -->
@@ -73,17 +77,14 @@
 
       <div class="col-lg-3 col-md-6 mb-4">
         <div class="card h-100">
-	<form method='post' action='/createplayer'>
           <img class="card-img-top" src="http://placehold.it/500x325" alt="">
           <div class="card-body">
-            <h4 class="card-title">Who are you?</h4>
-            <input id="playername" name='name' class="card-text"></input>
+            <h4 class="card-title">On-going game one</h4>
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo magni sapiente, tempore debitis beatae culpa natus architecto.</p>
           </div>
           <div class="card-footer">
-	    <input type="submit" class="btn btn-primary">Find Out More!</a>
             <a href="#" class="btn btn-primary">Find Out More!</a>
           </div>
-	</form>
         </div>
       </div>
 
