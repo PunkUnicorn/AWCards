@@ -4,6 +4,8 @@ var cardGameUltraObject = require("./cardGameUltraObject.js");
 var deckLoading = require("./deckLoading.js");
 var express=require('express');
 
+console.log(process.env);
+
 var buildTimestamp = process.env.BUILDTIMESTAMP || 'unknown';
 
 console.log('buildTimestamp', buildTimestamp);
