@@ -4,18 +4,9 @@ var cardGameUltraObject = require("./cardGameUltraObject.js");
 var deckLoading = require("./deckLoading.js");
 var express=require('express');
 
-const timestampFilename = 'timestamp.txt';
-
 var buildTimestamp = env.BUILDTIMESTAMP || 'unknown';
 
-/*fs.readFile(timestampFilename, {encoding: 'utf-8'}, function(err,data){
-    if (!err) {
-	buildTimestamp = data;
-        console.log('received data: ' + data);
-    } else {
-        console.log('cant read timestamp from:', timestampFilename, 'because', err);
-    }
-});*/
+console.log('buildTimestamp', buildTimestamp);
 
 var app = express();
 
