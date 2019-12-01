@@ -65,11 +65,15 @@
         <img class='img-fluid' src="GFY.png" width="50%"> </img>
 	<p class="lead">This is an independant implementation of the classic game: <span><a href="https://www.cardsagainsthumanityaichallenge.com"/>Cards Against Humanity</a></span> but with custom decks: <i>Social Justice Warrior</i>, <i>Alt-Right Crusader</i>, <i>Modern British Comedy</i> and <i>The Truth Is Out There</i> decks</p>
       </div>
-      <form method='post' action='/createplayer'>
-	      <label for='playername'>Who the fuck are you? (hint don't use your real name)</label>
-	      <input id='playername' name='name'></input>	      
-        <a href="#" class="btn btn-primary btn-lg">Yes! I'm a sick bastard!</a>
-      </form>
+      <div class="text-center row">
+          <form method="post" action="/createplayer">
+	      <label class="col-md-8" for="playername">Who the fuck are you? (hint don't use your real name)</label>
+	      <input class="col-md-8" id="playername" name="name">
+		  <div class="text-center col-md-8">
+              		<a href="#" class="btn btn-primary btn-lg col-md-3">Yes! I'm a sick bastard!</a>
+		  </div>
+          </form>
+      </div>
     </header>
 
     <!-- Page Features -->
