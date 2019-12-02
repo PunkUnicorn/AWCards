@@ -24,6 +24,11 @@ app.get('/buildtimestamp', function (req, res) {
 	res.end();
 });
 
+app.get('/games', function(req, res) {
+	res.write(cardGameUltraObject.getGames());
+	res.end();
+});
+
 app.post('/creategame', function(req, res) {
 	console.log(' \creategame', req);
 

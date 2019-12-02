@@ -20,17 +20,21 @@
   <!-- <link href="/startbootstrap-heroic-features-gh-pages/css/heroic-features.css" rel="stylesheet"> -->
 
 </head>
+<!-- OMG    carosel !!   https://www.cssscript.com/demo/card-carousel-tinder/ -->
+
+
+
+<!-- But this one takes the cake ......https://www.cssscript.com/demo/card-carousel-tinder/ -->
 
 <body>
   <script id="onGoingGameTemplate" type="text/template">  
-    <!-- https://www.bersling.com/2017/09/22/the-ultimate-mustache-tutorial/ -->
-    
+      <!-- https://www.bersling.com/2017/09/22/the-ultimate-mustache-tutorial/ -->
       <div class="col-lg-3 col-md-6 mb-4">
         <div class="card h-100">
           <img class="card-img-top" src="http://placehold.it/500x325" alt="">
           <div class="card-body">
-            <h4 class="card-title">On-going game one</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo magni sapiente, tempore debitis beatae culpa natus architecto.</p>
+            <h4 class="card-title">{{gamename}}</h4>
+            <p class="card-text"><span><ul>{{#players}}<li>{{playername}}</li>{{/players}}</ul></span></p>
           </div>
           <div class="card-footer">
             <a href="#" class="btn btn-primary">Find Out More!</a>
@@ -82,14 +86,19 @@
         <img class='img-fluid' src="GFY.png" width="50%"> </img>
 	<p class="lead">This is an independant implementation of the classic game: <span><a href="https://www.cardsagainsthumanityaichallenge.com"/>Cards Against Humanity</a></span> but with custom decks: <i>Social Justice Warrior</i>, <i>Alt-Right Crusader</i>, <i>Modern British Comedy</i> and <i>The Truth Is Out There</i> decks</p>
       </div>
+        <br />
+        <br />
         <form method="post" action="/createplayer">
 	    <div class="text-center row">
-	      <label class="col-md-12" for="playername">Who the fuck are you? (hint don't use your real name)</label>
+	      <label class="col-md-12" for="playername">Ok, so who the fuck are you?</label>
 	      <div class="col-md-12 text-center">
 	      	<input id="playername" name="name">
 	      </div>
+        <div class='col-md-12 text-center'>
+        <sub><input type='checkbox'>Your views are important to me</input></sub>
+        </div>
 		  <div class="text-center col-md-12">
-              		<a href="#" class="btn btn-primary btn-lg col-md-6">Yes! I'm a sick bastard!</a>
+              		<a href="#" class="btn btn-primary btn-lg col-md-6">Yes! <span class='small'>I'm a sick bastard!</span></a>
 		  </div>
 		
       	    </div>
@@ -159,16 +168,22 @@
 
 </body>
 <script>
-  var domParser = new DOMParser();
+  const domParser = new DOMParser();
+  var gameData = { gamename:'bobs game', players: [ {playername:'Trump', score:10, cards:[] }, { playername:'Johnson', score:7, cards:[]} ] };
   
-  setTimeout(function(doc, parser) {
-    var insertAfterMe = doc.getElementById('pageFeatures');
+  function elementsFromString(htmlAsString) {
+    var htmlDom = domParser.parseFromString( htmlAsString , "text/html");
+    return htmlDom.children[0].children[1].childNodes[0];
+  };
+  
+  setTimeout(function(doc, data) {
+    var insertAfterMe = doc.getElementById('pageFeatures');    
     var insertMe = doc.getElementById('onGoingGameTemplate');
-    var gameData = { gamename:'bobs game', players: [ {playername:'Trump', score:10, cards:[] }, { playername:'Johnson', score:7, cards:[]} ] };
-    var result = Mustache.to_html(insertMe.innerHTML, gameData);
-    var newElement = parser.parseFromString( result , "text/html");
-    insertAfterMe.appendChild( newElement.children[0].children[1].childNodes[0] );
-  }, 0, document, domParser);
+    
+    var result = Mustache.to_html(insertMe.innerHTML, data);
+    
+    insertAfterMe.appendChild( elementsFromString( result ) );
+  }, 0, document, gameData );
   
 	var timestampUrl = "/buildtimestamp";
 	
@@ -182,10 +197,32 @@
   }
   http.send(null);
 
+
+function updateHtml(doc, data) {
+  var insertAfterMe = doc.getElementById('pageFeatures');
+  var insertMe = doc.getElementById('onGoingGameTemplate');    
+  var result = Mustache.to_html(insertMe.innerHTML, data);    
+  insertAfterMe.appendChild( elementsFromString( result ) );
+}
+  
+  
+function getGames() {
+  var http = new XMLHttpRequest();
+	
+  var url = "/games";
+  http.open("GET", url, true);
+  http.onreadystatechange = function() {//Call a function when the state changes.
+    if(http.readyState == 4 && http.status == 200) {
+      updateHtml(document, JSON.parse(http.responseText));
+    }
+  }
+  http.send(null);
+}
+
 function createPlayer(playername) {
 	var createPlayerUrl = "/createplayer";
 	
-
+  //http://openjs.com/articles/ajax_xmlhttp_using_post.php
   var params = "playername="+playername;
   http.open("POST", createPlayerUrl, true);
 
@@ -200,7 +237,6 @@ function createPlayer(playername) {
     }
   }
   http.send(params);
-
 }  
 </script>
 

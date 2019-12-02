@@ -22,6 +22,20 @@ module.exports = {
     allPlayers : [],
     allGames: [],
 
+    getGames : function() {
+        return { 
+            gamename:'bobs game', 
+            players: [{ 
+                playername:'Trump', 
+                score:10, 
+                cards:[] 
+            }, { 
+                playername:'Johnson', 
+                score:7, 
+                cards:[]
+            } ]};  
+    },
+
     createPlayer: function(name) {
         console.log('player is created'); 
         return {
