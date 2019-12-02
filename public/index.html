@@ -14,13 +14,30 @@
   <!-- Bootstrap core CSS -->
   <!-- <link href="/startbootstrap-heroic-features-gh-pages/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
 	<link href="/bootstrap.min.css" rel="stylesheet">
-
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="/mustache/mustache.js"></script>
   <!-- Custom styles for this template -->
   <!-- <link href="/startbootstrap-heroic-features-gh-pages/css/heroic-features.css" rel="stylesheet"> -->
 
 </head>
 
 <body>
+  <script id="onGoingGameTemplate" type="text/template">  
+    <!-- https://www.bersling.com/2017/09/22/the-ultimate-mustache-tutorial/ -->
+    
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100">
+          <img class="card-img-top" src="http://placehold.it/500x325" alt="">
+          <div class="card-body">
+            <h4 class="card-title">On-going game one</h4>
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo magni sapiente, tempore debitis beatae culpa natus architecto.</p>
+          </div>
+          <div class="card-footer">
+            <a href="#" class="btn btn-primary">Find Out More!</a>
+          </div>
+        </div>
+      </div>
+  </script>
   <!-- <style -->
     <!-- * { -->
       <!-- background-color: #241C1C; -->
@@ -80,20 +97,8 @@
     </header>
 
     <!-- Page Features -->
-    <div class="row text-center">
+    <div id='pageFeatures' class="row text-center">
 
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" src="http://placehold.it/500x325" alt="">
-          <div class="card-body">
-            <h4 class="card-title">On-going game one</h4>
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo magni sapiente, tempore debitis beatae culpa natus architecto.</p>
-          </div>
-          <div class="card-footer">
-            <a href="#" class="btn btn-primary">Find Out More!</a>
-          </div>
-        </div>
-      </div>
 
       <div class="col-lg-3 col-md-6 mb-4">
         <div class="card h-100">
@@ -154,30 +159,49 @@
 
 </body>
 <script>
-	var url = "/buildtimestamp";
+  var domParser = new DOMParser();
+  
+  setTimeout(function(doc, parser) {
+    var insertAfterMe = doc.getElementById('pageFeatures');
+    var insertMe = doc.getElementById('onGoingGameTemplate');
+    var gameData = { gamename:'bobs game', players: [ {playername:'Trump', score:10, cards:[] }, { playername:'Johnson', score:7, cards:[]} ] };
+    var result = Mustache.to_html(insertMe.innerHTML, gameData);
+    var newElement = parser.parseFromString( result , "text/html");
+    insertAfterMe.appendChild( newElement.children[0].children[1].childNodes[0] );
+  }, 0, document, domParser);
+  
+	var timestampUrl = "/buildtimestamp";
 	
 	var http = new XMLHttpRequest();
-/*	
-	http.open("GET", url, true);
-
-	//Send the proper header information along with the request
-	//http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	http.setRequestHeader("Connection", "close");
-
-	http.onreadystatechange = function() {//Call a function when the state changes.
-		if(http.readyState == 4) {// && (http.status => 200 || http.status =< 205)) {
-			document.getElementById('buildtimestamp').innerHTML = http.responseText;
-		}
-	}
-*/	
 	
-http.open("GET", url, true);
-http.onreadystatechange = function() {//Call a function when the state changes.
-	if(http.readyState == 4 && http.status == 200) {
-		document.getElementById('buildtimestamp').innerHTML = http.responseText;
-	}
-}
-http.send(null);
+  http.open("GET", timestampUrl, true);
+  http.onreadystatechange = function() {
+	  if(http.readyState == 4 && http.status == 200) {
+  		document.getElementById('buildtimestamp').innerHTML = http.responseText;
+  	}
+  }
+  http.send(null);
+
+function createPlayer(playername) {
+	var createPlayerUrl = "/createplayer";
+	
+
+  var params = "playername="+playername;
+  http.open("POST", createPlayerUrl, true);
+
+  //Send the proper header information along with the request
+  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  http.setRequestHeader("Content-length", params.length);
+  http.setRequestHeader("Connection", "close");
+
+  http.onreadystatechange = function() {
+    if(http.readyState == 4 && http.status == 200) {
+      alert(http.responseText);
+    }
+  }
+  http.send(params);
+
+}  
 </script>
 
 </html>
