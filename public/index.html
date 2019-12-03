@@ -14,10 +14,9 @@
   <!-- Bootstrap core CSS -->
   <!-- <link href="/startbootstrap-heroic-features-gh-pages/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
 	<link href="/bootstrap.min.css" rel="stylesheet">
-  <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-  <script type="text/javascript" src="/mustache/mustache.js"></script>
   <!-- Custom styles for this template -->
   <!-- <link href="/startbootstrap-heroic-features-gh-pages/css/heroic-features.css" rel="stylesheet"> -->
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 
 </head>
 <!-- OMG    carosel !!   https://www.cssscript.com/demo/card-carousel-tinder/ -->
@@ -84,7 +83,7 @@
       <h1 class="text-center display-3">A Warm Welcome!</h1>
       <div class='text-center'>
         <img class='img-fluid' src="GFY.png" width="50%"> </img>
-	<p class="lead">This is an independant implementation of the classic game: <span><a href="https://www.cardsagainsthumanityaichallenge.com"/>Cards Against Humanity</a></span> but with custom decks: <i>Social Justice Warrior</i>, <i>Alt-Right Crusader</i>, <i>Modern British Comedy</i> and <i>The Truth Is Out There</i> decks</p>
+        <p class="lead">This is an independant implementation of the classic game: <span><a href="https://www.cardsagainsthumanityaichallenge.com"/>Cards Against Humanity</a></span> but with custom decks: <i>Social Justice Warrior</i>, <i>Alt-Right Crusader</i>, <i>Modern British Comedy</i> and <i>The Truth Is Out There</i> decks</p>
       </div>
         <br />
         <br />
@@ -164,10 +163,19 @@
 
   <!-- Bootstrap core JavaScript -->
   <script src="/startbootstrap-heroic-features-gh-pages/vendor/jquery/jquery.min.js"></script>
+  <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script> -->
+  <script type="text/javascript" src="/mustache/mustache.js"></script>  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
   <script src="/startbootstrap-heroic-features-gh-pages/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 <script>
+  
+  $(document).ready(function(){
+    $('#pageFeatures').slick({
+      slidesToShow: 3
+    });
+  });
+
   const domParser = new DOMParser();
   var gameData = { gamename:'bobs game', players: [ {playername:'Trump', score:10, cards:[] }, { playername:'Johnson', score:7, cards:[]} ] };
   
