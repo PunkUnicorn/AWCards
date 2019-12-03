@@ -25,8 +25,13 @@ app.get('/buildtimestamp', function (req, res) {
 });
 
 app.get('/games', function(req, res) {
-	res.write(cardGameUltraObject.getGames());
-	res.end();
+	var allGames = cardGameUltraObject.getGames();
+	console.log('allGames', allGames);
+	
+	res.setHeader('Content-Type', 'application/json');
+	
+	console.log(allGames);
+	res.end(JSON.stringify(allGames));
 });
 
 app.post('/creategame', function(req, res) {

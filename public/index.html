@@ -109,7 +109,7 @@
     <div id='pageFeatures' class="row text-center">
 
 
-      <div class="col-lg-3 col-md-6 mb-4">
+     <!-- <div class="col-lg-3 col-md-6 mb-4">
         <div class="card h-100">
           <img class="card-img-top" src="http://placehold.it/500x325" alt="">
           <div class="card-body">
@@ -146,7 +146,7 @@
             <a href="#" class="btn btn-primary">Find Out More!</a>
           </div>
         </div>
-      </div>
+      </div> -->
 
     </div>
     <!-- /.row -->
@@ -169,14 +169,14 @@
   <script src="/startbootstrap-heroic-features-gh-pages/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 <script>
-  
-  $(document).ready(function(){
-    $('#pageFeatures').slick({
+  var slickOptions = {
       dots: true,
+      arrows: false,
       //mobileFirst: true,
       //rows: 2,
       slidesToShow: 4,
       slidesToScroll: 4,
+      autoplay:true,
       responsive: [
 //        {
 //          breakpoint: 10240,
@@ -203,7 +203,12 @@
         // settings: "unslick"
         // instead of a settings object
       ]      
-    });
+    };
+    
+  $(document).ready(function(){
+    $('#pageFeatures').slick(slickOptions);
+    
+    getGames();
   });
   
   const domParser = new DOMParser();
@@ -213,7 +218,7 @@
     var htmlDom = domParser.parseFromString( htmlAsString , "text/html");
     return htmlDom.children[0].children[1].childNodes[0];
   };
-  
+ /* 
   setTimeout(function(doc, data) {
     var insertAfterMe = doc.getElementById('pageFeatures');    
     var insertMe = doc.getElementById('onGoingGameTemplate');
@@ -222,7 +227,7 @@
     
     insertAfterMe.appendChild( elementsFromString( result ) );
   }, 0, document, gameData );
-  
+  */
 	var timestampUrl = "/buildtimestamp";
 	
 	var http = new XMLHttpRequest();
@@ -240,7 +245,10 @@ function updateHtml(doc, data) {
   var insertAfterMe = doc.getElementById('pageFeatures');
   var insertMe = doc.getElementById('onGoingGameTemplate');    
   var result = Mustache.to_html(insertMe.innerHTML, data);    
-  insertAfterMe.appendChild( elementsFromString( result ) );
+  
+  //insertAfterMe.appendChild( elementsFromString( result ) );
+  
+  $('#pageFeatures').slick('slickAdd',result);
 }
   
   
@@ -251,7 +259,10 @@ function getGames() {
   http.open("GET", url, true);
   http.onreadystatechange = function() {//Call a function when the state changes.
     if(http.readyState == 4 && http.status == 200) {
-      updateHtml(document, JSON.parse(http.responseText));
+      var allGames = JSON.parse(http.responseText);
+      for (var i=allGames.length-1; i>=0; i--) {
+        updateHtml(document, allGames[i]);        
+      }
     }
   }
   http.send(null);

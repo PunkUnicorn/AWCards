@@ -15,15 +15,7 @@ function privateAddPlayer(name, game) {
     };
 }
 
-
-module.exports = {
-    
-    allDecks : [],
-    allPlayers : [],
-    allGames: [],
-
-    getGames : function() {
-        return { 
+var mockGameArray =[{ 
             gamename:'bobs game', 
             players: [{ 
                 playername:'Trump', 
@@ -33,7 +25,66 @@ module.exports = {
                 playername:'Johnson', 
                 score:7, 
                 cards:[]
-            } ]};  
+            } ]
+        },
+        { 
+            gamename:'johns game', 
+            players: [{ 
+                playername:'Wilson', 
+                score:10, 
+                cards:[] 
+            }, { 
+                playername:'JFK', 
+                score:7, 
+                cards:[]
+            } ]
+        },
+        { 
+            gamename:'judys game', 
+            players: [{ 
+                playername:'Alice', 
+                score:10, 
+                cards:[] 
+            }, { 
+                playername:'Jilly', 
+                score:7, 
+                cards:[]
+            } ]
+        },
+        { 
+            gamename:'alfs game', 
+            players: [{ 
+                playername:'jonny', 
+                score:10, 
+                cards:[] 
+            }, { 
+                playername:'harry', 
+                score:7, 
+                cards:[]
+            } ]
+        },
+        { 
+            gamename:'tonys game', 
+            players: [{ 
+                playername:'Blair', 
+                score:10, 
+                cards:[] 
+            }, { 
+                playername:'Thatcher', 
+                score:7, 
+                cards:[]
+            } ]
+        }];  
+
+module.exports = {
+    
+    allDecks : [],
+    allPlayers : [],
+    allGames: [],
+
+    getGames : function() {
+        return mockGameArray;
+
     },
 
     createPlayer: function(name) {
