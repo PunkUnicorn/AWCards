@@ -17,6 +17,7 @@
   <!-- Custom styles for this template -->
   <!-- <link href="/startbootstrap-heroic-features-gh-pages/css/heroic-features.css" rel="stylesheet"> -->
   <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css" integrity="sha256-4hqlsNP9KM6+2eA8VUT0kk4RsMRTeS7QGHIM+MZ5sLY=" crossorigin="anonymous" />
 
 </head>
 <!-- OMG    carosel !!   https://www.cssscript.com/demo/card-carousel-tinder/ -->
@@ -166,16 +167,45 @@
   <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script> -->
   <script type="text/javascript" src="/mustache/mustache.js"></script>  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
   <script src="/startbootstrap-heroic-features-gh-pages/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 </body>
 <script>
   
   $(document).ready(function(){
     $('#pageFeatures').slick({
-      slidesToShow: 3
+      dots: true,
+      //mobileFirst: true,
+      //rows: 2,
+      slidesToShow: 4,
+      slidesToScroll: 4,
+      responsive: [
+//        {
+//          breakpoint: 10240,
+//          settings: {
+//            slidesToShow: 4,
+//            slidesToScroll: 4
+//          }
+//        },
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+        // You can unslick at a given breakpoint now by adding:
+        // settings: "unslick"
+        // instead of a settings object
+      ]      
     });
   });
-
+  
   const domParser = new DOMParser();
   var gameData = { gamename:'bobs game', players: [ {playername:'Trump', score:10, cards:[] }, { playername:'Johnson', score:7, cards:[]} ] };
   
