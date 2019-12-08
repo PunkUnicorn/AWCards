@@ -42,13 +42,6 @@
         </div>
       </div>
   </script>
-  <!-- <style -->
-    <!-- * { -->
-      <!-- background-color: #241C1C; -->
-      <!-- color:00FF00; -->
-    <!-- } -->
-  <!-- </style> -->
-  <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">Start Bootstrap</a>
@@ -80,7 +73,7 @@
   <div class="container">
 
     <!-- Jumbotron Header -->
-    <header class="jumbotron my-4">
+    <div class="jumbotron my-4">
       <h1 class="text-center display-3">A Warm Welcome!</h1>
       <div class='text-center'>
         <img class='img-fluid' src="GFY.png" width="50%"> </img>
@@ -89,27 +82,30 @@
         <br />
         <br />
         <form method="post" action="/createplayer">
-	    <div class="text-center row">
-	      <label class="col-md-12" for="playername">Ok, so who the fuck are you?</label>
-	      <div class="col-md-12 text-center">
-	      	<input id="playername" name="name">
-	      </div>
-        <div class='col-md-12 text-center'>
-        <sub><input type='checkbox'>Your views are important to me</input></sub>
-        </div>
-		  <div class="text-center col-md-12">
-              		<a href="#" class="btn btn-primary btn-lg col-md-6">Yes! <span class='small'>I'm a sick bastard!</span></a>
-		  </div>
-		
-      	    </div>
-       </form>
-    </header>
+					<div class="text-center row">
+						<label class="col-md-12" for="playername">Ok, so who the fuck are you?</label>
+						<div class="col-md-12 text-center">
+							<input id="playername" name="name">
+						</div>
+						<div class='col-md-12 text-center'>
+							<sub><input type='checkbox'>Your views are important to me</input></sub>
+						</div>
+						<div class="text-center col-md-12">
+							<a href="#" class="btn btn-primary btn-lg col-md-6">Yes! <span class='small'>I'm a sick bastard!</span></a>
+						</div>
+					</div>
+				</form>
+    </div>
+
+		<div class='text-center my-4'>
+		<span id='gamecaroselnav' class='col-10'></span>
+		</div>
 
     <!-- Page Features -->
-    <div id='pageFeatures' class="row text-center">
-
-<span><div class='btn'>next</div> <div class='btn'>prev</div></span>
-    </div>
+		<div class='text-center'>
+			<div id='pageFeatures' class="row text-center">
+			</div>
+		<div>
     <!-- /.row -->
 
   </div>
@@ -132,9 +128,10 @@
 <script>
   var slickOptions = {
       dots: true,
-      arrows: false,
+      arrows: true,
       //mobileFirst: true,
       //rows: 2,
+			appendArrows: "#gamecaroselnav",
       slidesToShow: 4,
       slidesToScroll: 4,
       autoplay:true,
