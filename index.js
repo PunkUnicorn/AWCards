@@ -59,13 +59,11 @@ app.post('/createplayer', function(req, res) {
 		}
 	}
 	
-	res.write( {
+	res.end( {
 		ok :createResultPlayer.ok && createResultGame.ok, 
 		player: createResultPlayer, 
 		game: createResultGame 
 	});
-
-	res.end();
 });
 
 
