@@ -55,13 +55,13 @@ app.post('/createplayer', function(req, res) {
 	if (createResultPlayer.ok) {
 		var autoAddGameName = req.param('gamename');
 		if (typeof autoAddGameName !== 'unknown') {
-			createResultGame = cardGameUltraObject.addPlayer(autoAddGameName, name);
+			createResultGame = cardGameUltraObject.addPlayer(autoAddGameName, playerName);
 		}
 	}
 	
 	res.write( {
 		ok :createResultPlayer.ok && createResultGame.ok, 
-		player:createResultPlayer, 
+		player: createResultPlayer, 
 		game: createResultGame 
 	});
 
