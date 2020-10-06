@@ -1,6 +1,8 @@
 {
   "name": "awcards",
   "version": "0.0.1",
+  "description": "cards against humanity",
+  "main": "index.js",
   "dependencies": {
     "data-store": "^4.0.3",
     "express": "^4.17.1",
@@ -8,9 +10,7 @@
     "nib": "^1.0.4",
     "stylus": "^0.54.7"
   },
-  "main": "index.js",
   "scripts": {},
-  "author": "Matthew Cocks",
-  "license": "ISC",
-  "description": ""
+  "author": "Matthew Cocks aka GOTO 10 aka PunkUnicorn",
+  "license": "ISC"
 }
