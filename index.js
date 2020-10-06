@@ -35,7 +35,7 @@ app.get('/games', function(req, res) {
 });
 
 app.post('/creategame', function(req, res) {
-	console.log(' \creategame', req);
+	console.log(' /creategame', req);
 
 	var gamename = req.param('gamename');
 	
@@ -46,7 +46,7 @@ app.post('/creategame', function(req, res) {
 });
 
 app.post('/createplayer', function(req, res) {
-	console.log(' \createplayer', req);
+	console.log(' /createplayer', req);
 	
 	var playerName = req.param('playername');
 	var createResultPlayer = cardGameUltraObject.createPlayer(name);
@@ -54,7 +54,7 @@ app.post('/createplayer', function(req, res) {
 
 	if (createResultPlayer.ok) {
 		var autoAddGameName = req.param('gamename');
-		if (typeof autoAddGameName !== 'unknown') {
+		if (typeof autoAddGameName !== 'undefined') {
 			createResultGame = cardGameUltraObject.addPlayer(autoAddGameName, playerName);
 		}
 	}
